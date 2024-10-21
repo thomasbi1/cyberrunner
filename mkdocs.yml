@@ -1,0 +1,24 @@
+site_name: CyberRunner
+theme:
+  name: readthedocs
+  highlightjs: true
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        # See: https://mkdocstrings.github.io/python/usage/
+        python:
+          options:
+            docstring_style: sphinx
+markdown_extensions:
+  - markdown_include.include:
+      base_path: .
+  - admonition
+nav:
+  - 'Home': 'index.md'
+  - 'Hardware Setup': '01_hardware_setup.md'
+  - 'Reload Mechanism': '02_reload.md'
+  - 'Installation': '03_installation.md'
+  - 'Initial Configuration': '04_initial_config.md'
+  - 'Train': '05_train.md'
+  - 'Troubleshooting': '06_troubleshooting.md'
