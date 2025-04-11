@@ -24,7 +24,7 @@ class CyberrunnerGym(gym.Env):
         layout=cyberrunner_layout.cyberrunner_hard_layout,
         num_rel_path=5,
         num_wait_steps=30,
-        reward_on_fail=-0.05,
+        reward_on_fail=0.0,
         reward_on_goal=0.5,
     ):
         super().__init__()
@@ -112,10 +112,6 @@ class CyberrunnerGym(gym.Env):
     def step(self, action):
 
         self.steps += 1
-        if self.steps > int(1.5e5):
-            action = np.zeros((2,))
-            self._send_action(action)
-            exit()
 
         # Send action to dynamixel
         if self.cheat and (self.p.num_points - self.prev_pos_path <= 200):
