@@ -27,7 +27,7 @@ class Cyberrunner(generic.Generic):
             length=length,
             capacity=capacity,
             remover=selectors.Fifo(),
-            sampler=selectors.Prio(seed),
+            sampler=selectors.Uniform(seed),
             limiter=limiter,
             directory=directory,
             online=online,
