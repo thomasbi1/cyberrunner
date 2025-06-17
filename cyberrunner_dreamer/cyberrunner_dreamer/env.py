@@ -86,7 +86,6 @@ class CyberrunnerGym(gym.Env):
         #     walls_v=np.array(layout["walls_v"]),
         #     holes=np.array(layout["holes"]),
         # )
-        self.p.save("/home/thomas/path_0002_hard.pkl")
         self.prev_pos_path = 0
         self.num_wait_steps = num_wait_steps
         self.reward_on_fail = reward_on_fail
