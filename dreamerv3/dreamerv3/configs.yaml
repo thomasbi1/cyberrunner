@@ -115,7 +115,7 @@ cyberrunner:
     log_keys_sum: '^log_reward$'
   encoder: {mlp_keys: 'states|goal$', cnn_keys: 'image'}
   decoder: {mlp_keys: 'states|goal$', cnn_keys: 'image'}
-  wrapper: {length: 10}
+  wrapper: {length: 3000}
 
 minecraft:
 
