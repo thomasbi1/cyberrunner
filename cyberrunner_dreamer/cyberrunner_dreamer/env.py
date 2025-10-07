@@ -35,7 +35,7 @@ class CyberrunnerGym(gym.Env):
 
         self.cheat = False
         self.observation_space = gym.spaces.Dict(
-            image=gym.spaces.Box(0, 255, (64, 64, 3), np.uint8),
+            image=gym.spaces.Box(0, 255, (64, 64, 1), np.uint8),
             states=gym.spaces.Box(-np.inf, np.inf, (4,), np.float32),
             goal=gym.spaces.Box(-np.inf, np.inf, (num_rel_path * 2,), np.float32),
             progress=gym.spaces.Box(-np.inf, np.inf, (1,), np.float32),
@@ -283,7 +283,7 @@ class CyberrunnerGym(gym.Env):
             states[2:] += self.offset
             rel_path = self.p.get_rel_path(states[2:], self.num_rel_path, 60).flat
             # states = np.concatenate((states, rel_path), axis=0)
-            img = self.br.imgmsg_to_cv2(msg.subimg)
+            img = self.br.imgmsg_to_cv2(msg.subimg).mean(axis=-1, keepdims=True)
             self.obs = {"states": states, "goal": rel_path, "image": img}
 
         self.new_obs = True
