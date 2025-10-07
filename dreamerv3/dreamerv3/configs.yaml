@@ -58,7 +58,7 @@ defaults:
   # Agent
   task_behavior: Greedy
   expl_behavior: None
-  batch_size: 4
+  batch_size: 16
   batch_length: 64
   data_loaders: 8
 
