@@ -84,7 +84,7 @@ class LinearPath:
                     # continue
 
                     # Filter out points that are blocked by walls or holes
-                    ball_r = 0.0075
+                    ball_r = wall_r # 0.0#0.0075
                     hy_dist = walls_h[:, 2] - pos[1]
                     hx_mask = np.logical_and(
                         pos[0] >= (walls_h[:, 0] - ball_r),
@@ -271,3 +271,86 @@ class LinearPath:
             p = pickle.load(f)
 
         return p
+
+
+if __name__ == "__main__":
+    from layout import cyberrunner_hard_layout
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+
+    layout = cyberrunner_hard_layout
+    p = LinearPath(
+        np.array(layout["waypoints"]),
+        walls_h=np.array(layout["walls_h"]),
+        walls_v=np.array(layout["walls_v"]),
+        holes=np.empty((0, 3)), #np.array(layout["holes"]),
+        distance=0.0002
+    )
+
+    # Vectorized jump-detection: mark neighbor cells with jump > threshold as -1
+    threshold = 0.057
+    idx_map = p.closest_idx.copy()
+
+    # Vertical neighbors (downward)
+    idx1 = p.closest_idx[:-1, :]
+    idx2 = p.closest_idx[1:, :]
+    valid = (idx1 != -1) & (idx2 != -1)
+    # Compute jump distances based on index difference
+    jump_dists = np.abs(idx1[valid] - idx2[valid]) * p.distance
+    jump_mask = np.zeros_like(valid, dtype=bool)
+    jump_mask[valid] = jump_dists > threshold
+    # Mark both cells of each jump
+    idx_map[:-1, :][jump_mask] = -1
+    idx_map[1:, :][jump_mask] = -1
+
+    # Horizontal neighbors (rightward)
+    idx1 = p.closest_idx[:, :-1]
+    idx2 = p.closest_idx[:, 1:]
+    valid = (idx1 != -1) & (idx2 != -1)
+    jump_dists = np.abs(idx1[valid] - idx2[valid]) * p.distance
+    jump_mask = np.zeros_like(valid, dtype=bool)
+    jump_mask[valid] = jump_dists > threshold
+    idx_map[:, :-1][jump_mask] = -1
+    idx_map[:, 1:][jump_mask] = -1
+
+    # Visualize the closest_idx matrix with -1 values in red
+    fig, ax = plt.subplots()
+    cmap = plt.cm.viridis
+    cmap.set_under('red')
+    im = ax.imshow(idx_map, interpolation='none', cmap=cmap, vmin=0)
+    ax.invert_yaxis()
+
+    # Wall thickness (meters) to pixels
+    thickness_px = 0.003 / p.distance
+
+    # Overlay horizontal walls as black rectangles
+    for x_start, x_end, y in layout["walls_h"]:
+        x0 = x_start / p.distance
+        width = (x_end - x_start) / p.distance
+        y0 = y / p.distance - thickness_px / 2
+        rect = Rectangle((x0, y0), width, thickness_px, facecolor='black', edgecolor='none')
+        ax.add_patch(rect)
+
+    # Overlay vertical walls as black rectangles
+    for y_start, y_end, x_v in layout["walls_v"]:
+        y0 = y_start / p.distance
+        height = (y_end - y_start) / p.distance
+        x0 = x_v / p.distance - thickness_px / 2
+        rect = Rectangle((x0, y0), thickness_px, height, facecolor='black', edgecolor='none')
+        ax.add_patch(rect)
+
+    # Overlay holes
+    s = (0.015 / p.distance) ** 2.0
+    s = 100
+    print(s)
+    xs = [x / p.distance for x, y in layout["holes"]]
+    ys = [y / p.distance for x, y in layout["holes"]]
+    ax.scatter(xs, ys, marker='o', s=s)
+
+    # Overlay path of all sample points as black line
+    xs_path = p.points[:, 0] / p.distance
+    ys_path = p.points[:, 1] / p.distance
+    ax.plot(xs_path, ys_path, linestyle='-', linewidth=1, color='black')
+
+    plt.show()

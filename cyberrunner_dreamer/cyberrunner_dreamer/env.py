@@ -81,11 +81,13 @@ class CyberrunnerGym(gym.Env):
         # else:
         #     self.p = LinearPath(np.array(layout["waypoints"]))
         # self.p = LinearPath(
-        #    np.array(layout["waypoints"]),
-        #     walls_h=np.array(layout["walls_h"]),
-        #     walls_v=np.array(layout["walls_v"]),
-        #     holes=np.array(layout["holes"]),
-        # )
+        #     np.array(layout["waypoints"]),
+        #      walls_h=np.array(layout["walls_h"]),
+        #      walls_v=np.array(layout["walls_v"]),
+        #      holes=np.empty((0, 3)),
+        #  )
+        # self.p.save("/home/thomas/path_0002_hard.pkl")
+        self.cheat_threshold = int(0.057 / self.p.distance)
         self.prev_pos_path = 0
         self.num_wait_steps = num_wait_steps
         self.reward_on_fail = reward_on_fail
@@ -262,7 +264,7 @@ class CyberrunnerGym(gym.Env):
             # time.sleep(0.05)
             self._send_action(np.array([0.0, 0.0]))
 
-        if (not self.cheat) and self.progress > 300:
+        if (not self.cheat) and self.progress > self.cheat_threshold:
             done = True
             print("[Done]: Too high progress")
 
