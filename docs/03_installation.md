@@ -9,7 +9,7 @@ Installation
 
 3. Clone this repository into your ROS2 workspace and navigate back to the workspace root.
 
-        git clone git@github.com:thomasbi1/cyberrunner.git
+        git clone https://github.com/thomasbi1/cyberrunner.git
         cd ..
 
 4. Install [jax](https://jax.readthedocs.io/en/latest/installation.html) with GPU support.
