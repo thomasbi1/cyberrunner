@@ -29,13 +29,15 @@ To get started with CyberRunner, please refer to the [Docs](http://cyberrunner.r
 If you use this work in an academic context, please cite the following publication:
 
 * T. Bi, R. D'Andrea,
-**"Sample-Efficient Learning to Solve a Real-World Labyrinth Game Using Data-Augmented Model-Based Reinforcement Learning"**, 2023. ([PDF](https://arxiv.org/abs/2312.09906))
+**"Sample-Efficient Learning to Solve a Real-World Labyrinth Game Using Data-Augmented Model-Based Reinforcement Learning"**, 2024 IEEE International Conference on Robotics and Automation (ICRA). ([PDF](https://arxiv.org/abs/2312.09906))
 
-        @article{bi2023sample,
-          title={Sample-Efficient Learning to Solve a Real-World Labyrinth Game Using Data-Augmented Model-Based Reinforcement Learning},
-          author={Bi, Thomas and D'Andrea, Raffaello},
-          journal={arXiv preprint arXiv:2312.09906},
-          year={2023}
+         @inproceedings{bi2024sample,
+          title={Sample-efficient learning to solve a real-world labyrinth game using data-augmented model-based reinforcement learning},
+          author={Bi, Thomas and D’Andrea, Raffaello},
+          booktitle={2024 IEEE International Conference on Robotics and Automation (ICRA)},
+          pages={7455--7460},
+          year={2024},
+          organization={IEEE}
         }
 
 ## License
