@@ -34,18 +34,18 @@ class Cyberrunner(generic.Generic):
             chunks=chunks,
         )
 
-    def add(self, step, worker=0, load=False):
+    def add(self, orig_step, worker=0, load=False):
         # Do transformations
         # print(step)
         # print(worker)
-        i = 0
         if load:
-            super().add(step, str(i), load)
+            super().add(orig_step, worker, load)
             return
+        i = 0
         for dir in [0]:
             for flip_h in [0, 1]:
                 for flip_v in [0, 1]:
-                    step = step.copy()
+                    step = orig_step.copy()
                     image = step["image"].copy()
                     states = step["states"].copy()
                     goal = (
